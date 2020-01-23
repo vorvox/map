@@ -8,6 +8,12 @@ To run in autorun mode (randomly explore and display map at the end):
 
 
 
-To compile: gcc main.c
+
+
+To compile: 
+
+gcc main.c
+
+
 
 Controls: WASD to move. The Enter key must be pressed after each command.
