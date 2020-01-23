@@ -4,12 +4,16 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <unistd.h>
+
+#define AUTORUN 1  // If set to 1, bot will auto-explore the map
+
 #define NORTH 0
 #define SOUTH 1
 #define EAST 2
 #define WEST 3
-#define HEIGHT 20
-#define WIDTH 20
+#define HEIGHT 50
+#define WIDTH 50
 #define EXPLORED 2
 
 void clear_screen(void){
@@ -100,7 +104,13 @@ int main(int argc, char **argv)
     print_map(map,x,y);
     newy = y;
     newx = x;
-    input = getchar();
+    if(AUTORUN == 1){
+      char choices[4] = "wasd";
+      input = choices[rand()%4];
+      usleep(10000);
+    } else {
+      input = getchar();
+    }
     if(input == 'w'){
             newy--;
     } else if(input == 's'){
