@@ -8,8 +8,8 @@
 #define SOUTH 1
 #define EAST 2
 #define WEST 3
-#define HEIGHT 100
-#define WIDTH 100
+#define HEIGHT 20
+#define WIDTH 20
 
 void print_screen(void)
 {
@@ -43,9 +43,11 @@ void print_map(int map[HEIGHT][WIDTH], int playerx, int playery)
                 printf("@");
             } else if(map[iy][ix] == 1){
                 printf("0");
+            } else if(map[iy][ix] == -1){
+                printf("X");
             } else {
-                printf(" ");
-            };
+		printf(" ");
+	    };
           //  printf("%d",map[iy][ix]);
         }
         printf("\n");
@@ -86,17 +88,32 @@ int main(int argc, char **argv)
             map[pathy][pathx] = 1; 
         
     };
-    
-    
+    //The other paths are now unpassable
+/*    
+pathx = x;
+    pathy = y;
+    for(i = 0;i < 3;i++){
+	if(i == NORTH){
+                pathy++;
+            } else if(i == SOUTH){
+                pathy--;
+            } else if(i == WEST){
+                pathx--;
+            } else if(i == EAST){
+                pathx++;
+            };
+    } 
+    map[pathy][pathx] = 0;
+    */
     //Player picks a path
     print_map(map,x,y);
     newy = y;
     newx = x;
     input = getchar();
     if(input == 'w'){
-            newy++;
-    } else if(input == 's'){
             newy--;
+    } else if(input == 's'){
+            newy++;
     } else if(input == 'a'){
             newx--;
     } else if(input == 'd'){
