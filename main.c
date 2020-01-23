@@ -43,11 +43,11 @@ void print_map(int map[HEIGHT][WIDTH], int playerx, int playery)
             if((iy == playery) && (ix == playerx)){
                 printf("@");
             } else if(map[iy][ix] == 1){
-                printf("0");
+                printf(".");
             } else if(map[iy][ix] == EXPLORED){
-                printf("X");
+                printf("0");
             } else {
-		printf(" ");
+		            printf(" ");
 	    };
           //  printf("%d",map[iy][ix]);
         }
@@ -67,31 +67,29 @@ int main(int argc, char **argv)
     char input = ' ';
     int dir = 0;
     int map[HEIGHT][WIDTH] = {{0}};
-    print_map(map,x,y);
-    printf("\n");
-    int counter = 100;
-    while(counter--){
+	
+    while(1){ // Main game loop
     //generate new random paths (current node is now marked as explored)
     if(map[y][x] != EXPLORED){
-    for(i = 0;i < 3;i++){
-        pathx = x;
-        pathy = y;
-        dir = rand()%4;
-            if(dir == NORTH){
-                pathy++;
-            } else if(dir == SOUTH){
-                pathy--;
-            } else if(dir == WEST){
-                pathx--;
-            } else if(dir == EAST){
-                pathx++;
-            };
-            if(map[pathy][pathx] != EXPLORED) map[pathy][pathx] = 1;   
-    };
-    map[y][x] = EXPLORED;
+    	for(i = 0;i < 3;i++){
+        	pathx = x;
+        	pathy = y;
+        	dir = rand()%4;
+            	if(dir == NORTH){
+                	pathy++;
+            	} else if(dir == SOUTH){
+                	pathy--;
+            	} else if(dir == WEST){
+                	pathx--;
+            	} else if(dir == EAST){
+                	pathx++;
+            	};
+            	if(map[pathy][pathx] != EXPLORED) map[pathy][pathx] = 1;   
+    	};
+   	 map[y][x] = EXPLORED;
     };
  
-    //Player picks a path
+    //Display map. Player picks a path
     print_map(map,x,y);
     newy = y;
     newx = x;
@@ -110,6 +108,7 @@ int main(int argc, char **argv)
         x = newx;
         y = newy;
     };
+	    
     };
     
     return 0;
