@@ -12,6 +12,12 @@
 #define WIDTH 20
 #define EXPLORED 2
 
+void clear_screen(void){
+  int counter = 100;
+  while(counter--) printf("\n");
+  return;
+}
+
 void print_screen(void)
 {
     int counter = 100;
@@ -90,6 +96,7 @@ int main(int argc, char **argv)
     };
  
     //Display map. Player picks a path
+    clear_screen();
     print_map(map,x,y);
     newy = y;
     newx = x;
