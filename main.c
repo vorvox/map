@@ -6,15 +6,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define AUTORUN 0  // If set to 1, bot will auto-explore the map
-#define AUTORUN_LENGTH 7000 // How many turns to auto-explore
+#define AUTORUN 1  // If set to 1, bot will auto-explore the map
+#define AUTORUN_LENGTH 50000 // How many turns to auto-explore
 
 #define NORTH 0
 #define SOUTH 1
 #define EAST 2
 #define WEST 3
 #define HEIGHT 50
-#define WIDTH 50
+#define WIDTH 100
 
 #define EXPLORED 2
 
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
             	};
             	if(map[pathy][pathx] != EXPLORED) map[pathy][pathx] = 1;   
     	};
-   	 map[y][x] = EXPLORED;
+   	 map[y][x] = EXPLORED; 
     };
  
     //Display map. Player picks a path
