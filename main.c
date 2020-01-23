@@ -7,6 +7,7 @@
 #include <unistd.h>
 
 #define AUTORUN 0  // If set to 1, bot will auto-explore the map
+#define AUTORUN_LENGTH 7000 // How many turns to auto-explore
 
 #define NORTH 0
 #define SOUTH 1
@@ -78,8 +79,10 @@ int main(int argc, char **argv)
     char input = ' ';
     int dir = 0;
     int map[HEIGHT][WIDTH] = {{0}};
-	
-    while(1){ // Main game loop
+    int counter = AUTORUN_LENGTH;
+    while(AUTORUN == 0 ? 1 : (counter--)){ // Main game loop
+    // In autorun mode, stop when counter reaches 0
+
     //generate new random paths (current node is now marked as explored)
     if(map[y][x] != EXPLORED){
     	for(i = 0;i < 2;i++){
@@ -102,8 +105,7 @@ int main(int argc, char **argv)
  
     //Display map. Player picks a path
     
-    newy = y;
-    newx = x;
+    
     if(AUTORUN == 1){
       char choices[4] = "wasd";
       input = choices[rand()%4];
@@ -113,6 +115,8 @@ int main(int argc, char **argv)
       print_map(map,x,y);	
       input = getchar();
     }
+    newy = y;
+    newx = x;
     if(input == 'w'){
             newy--;
     } else if(input == 's'){
@@ -130,5 +134,6 @@ int main(int argc, char **argv)
 	    
     };
     
+    print_map(map,x,y);
     return 0;
 }
