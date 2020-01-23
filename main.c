@@ -10,6 +10,7 @@
 #define WEST 3
 #define HEIGHT 20
 #define WIDTH 20
+#define EXPLORED 2
 
 void print_screen(void)
 {
@@ -43,7 +44,7 @@ void print_map(int map[HEIGHT][WIDTH], int playerx, int playery)
                 printf("@");
             } else if(map[iy][ix] == 1){
                 printf("0");
-            } else if(map[iy][ix] == -1){
+            } else if(map[iy][ix] == EXPLORED){
                 printf("X");
             } else {
 		printf(" ");
@@ -65,14 +66,14 @@ int main(int argc, char **argv)
     pathy = newy = y;
     char input = ' ';
     int dir = 0;
-    int map[HEIGHT][WIDTH] = {{-1}};
+    int map[HEIGHT][WIDTH] = {{0}};
     print_map(map,x,y);
     printf("\n");
     int counter = 100;
     while(counter--){
-    //generate up to two new random paths
-    map[y][x] = 1; 
-    for(i = 0;i < 2;i++){
+    //generate new random paths (current node is now marked as explored)
+    if(map[y][x] != EXPLORED){
+    for(i = 0;i < 3;i++){
         pathx = x;
         pathy = y;
         dir = rand()%4;
@@ -85,26 +86,11 @@ int main(int argc, char **argv)
             } else if(dir == EAST){
                 pathx++;
             };
-            map[pathy][pathx] = 1; 
-        
+            if(map[pathy][pathx] != EXPLORED) map[pathy][pathx] = 1;   
     };
-    //The other paths are now unpassable
-/*    
-pathx = x;
-    pathy = y;
-    for(i = 0;i < 3;i++){
-	if(i == NORTH){
-                pathy++;
-            } else if(i == SOUTH){
-                pathy--;
-            } else if(i == WEST){
-                pathx--;
-            } else if(i == EAST){
-                pathx++;
-            };
-    } 
-    map[pathy][pathx] = 0;
-    */
+    map[y][x] = EXPLORED;
+    };
+ 
     //Player picks a path
     print_map(map,x,y);
     newy = y;
@@ -120,7 +106,7 @@ pathx = x;
             newx++;
     };
     // Follow the path if valid
-    if(map[newy][newx] == 1) {
+    if(map[newy][newx] != 0) {
         x = newx;
         y = newy;
     };
@@ -128,4 +114,3 @@ pathx = x;
     
     return 0;
 }
-
