@@ -1,6 +1,5 @@
 // Generates a map and allows the play to move through it.
-// Potential difficulties: realtime player input, rougelike style
-// Done by 1:30 pm
+
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
