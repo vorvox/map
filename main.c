@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define AUTORUN 1  // If set to 1, bot will auto-explore the map
+#define AUTORUN 0  // If set to 1, bot will auto-explore the map
 
 #define NORTH 0
 #define SOUTH 1
@@ -14,6 +14,7 @@
 #define WEST 3
 #define HEIGHT 50
 #define WIDTH 50
+
 #define EXPLORED 2
 
 void clear_screen(void){
@@ -81,7 +82,7 @@ int main(int argc, char **argv)
     while(1){ // Main game loop
     //generate new random paths (current node is now marked as explored)
     if(map[y][x] != EXPLORED){
-    	for(i = 0;i < 3;i++){
+    	for(i = 0;i < 2;i++){
         	pathx = x;
         	pathy = y;
         	dir = rand()%4;
@@ -100,15 +101,16 @@ int main(int argc, char **argv)
     };
  
     //Display map. Player picks a path
-    clear_screen();
-    print_map(map,x,y);
+    
     newy = y;
     newx = x;
     if(AUTORUN == 1){
       char choices[4] = "wasd";
       input = choices[rand()%4];
-      usleep(10000);
-    } else {
+     // usleep(10000);
+    } else { 
+      clear_screen();
+      print_map(map,x,y);	
       input = getchar();
     }
     if(input == 'w'){
