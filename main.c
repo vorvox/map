@@ -23,12 +23,6 @@ void clear_screen(void){
   return;
 }
 
-void print_screen(void)
-{
-    int counter = 100;
-    while(counter--) printf("\n");
-    return;
-}
 
 void print_dir(int dir)
 {
