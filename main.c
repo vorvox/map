@@ -5,15 +5,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define AUTORUN 1  // If set to 1, bot will auto-explore the map
+#define AUTORUN 0  // If set to 1, bot will auto-explore the map
 #define AUTORUN_LENGTH 50000 // How many turns to auto-explore
 
 #define NORTH 0
 #define SOUTH 1
 #define EAST 2
 #define WEST 3
-#define HEIGHT 50
-#define WIDTH 100
+#define HEIGHT 20
+#define WIDTH 70
 
 #define EXPLORED 2
 
@@ -69,6 +69,8 @@ void print_map(int map[HEIGHT][WIDTH], int playerx, int playery)
 
 int main(int argc, char **argv)
 {
+    system("/bin/stty -ignbrk -brkint -ignpar -parmrk -inpck -istrip -inlcr -igncr -icrnl -ixon -ixoff -iuclc -imaxbel -isig -icanon -echo min 1 time 0");
+    // All stty _input_ options included in "raw" mode 
     srand(time(NULL));
     int i,x,y,pathx,pathy,newx,newy;
     x = WIDTH/2;
@@ -79,7 +81,7 @@ int main(int argc, char **argv)
     int dir = 0;
     int map[HEIGHT][WIDTH] = {{0}};
     int counter = AUTORUN_LENGTH;
-    while(AUTORUN == 0 ? 1 : (counter--)){ // Main game loop
+    while((input != 'q') && (AUTORUN == 0 ? 1 : (counter--))){ // Main game loop
     // In autorun mode, stop when counter reaches 0
 
     //generate new random paths (current node is now marked as explored)
@@ -112,6 +114,7 @@ int main(int argc, char **argv)
     } else { 
       clear_screen();
       print_map(map,x,y);	
+      printf("Press q to quit\n");
       input = getchar();
     }
     newy = y;
@@ -134,5 +137,6 @@ int main(int argc, char **argv)
     };
     
     print_map(map,x,y);
+    system("stty cooked echo");
     return 0;
 }
