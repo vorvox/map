@@ -1,4 +1,5 @@
 // Generates a map and allows the play to move through it.
+// PLAN: Sometimes a new tile is a portal, which is persistant. Portal entry is optional.
 
 #include <stdio.h>
 #include <time.h>
@@ -108,7 +109,7 @@ int main(int argc, char **argv)
     } else { 
       clear_screen();
       print_map(map,x,y);	
-      printf("Press q to quit\n");
+      printf("Press q to quit or return to previous level\n");
       input = getchar();
     }
     newy = y;
@@ -127,10 +128,19 @@ int main(int argc, char **argv)
         x = newx;
         y = newy;
     };
-	    
+    
+    // Sometimes you stumble upon a portal to a new map..
+    if((rand()%30) == 1) {
+	    printf("You discover a stairway to the next level...\n");
+	    getchar();
+	    system(argv[0]);
+    	    system("/bin/stty -ignbrk -brkint -ignpar -parmrk -inpck -istrip -inlcr -igncr -icrnl -ixon -ixoff -iuclc -imaxbel -isig -icanon -echo min 1 time 0");
+	    printf("Returning to previous level...\n");
+	    getchar();
+    } 
     };
     
-    print_map(map,x,y);
+    if(AUTORUN == 1) print_map(map,x,y);
     system("stty cooked echo");
     return 0;
 }
