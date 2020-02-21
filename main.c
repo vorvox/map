@@ -159,7 +159,7 @@ int main(int argc, char **argv)
             	if(map[pathy][pathx] != EXPLORED) map[pathy][pathx] = 1;   
     	};
    	 map[y][x] = EXPLORED; 
-     if((portal_exists == 0) && ((rand()%2) == 1) && (x != (WIDTH/2)) && (y != (HEIGHT/2)))
+     if((portal_exists == 0) && ((rand()%30) == 1) && (x != (WIDTH/2)) && (y != (HEIGHT/2)))
      { //Sometimes you discover a portal
         portal_exists = 1;
         portalx = x;
@@ -171,7 +171,7 @@ int main(int argc, char **argv)
     
     
     if(AUTORUN == 1){
-      char choices[4] = "wasd";
+      char choices[6] = "wasd><";
       input = choices[rand()%4];
      // usleep(10000);
     } else { 
