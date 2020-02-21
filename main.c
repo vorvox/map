@@ -9,6 +9,8 @@
 
 // When entering a new level, update the levels list with the current level and generate a new one.
 
+// There is always an up-staircase at the center of each level
+
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
@@ -33,6 +35,7 @@ struct level{
   int generated; // If 0, it is empty. If 1, it has already been partially explored
   int portal_exists;
   int portalx,portaly;
+  int prev_level, next_level; // Index into array of levels, 
 };
 
 void clear_screen(void){
@@ -70,14 +73,17 @@ void print_map(int map[HEIGHT][WIDTH], int playerx, int playery, int portalx, in
             } else if(map[iy][ix] == EXPLORED){
                 if((ix == portalx) && (iy == portaly)){
                   printf(">");
+                } else if ((ix == (WIDTH/2)) && (iy == (HEIGHT/2))){
+                 printf("<");
                 } else {
                   printf("0");
-                }
+                } 
             } else {
 		            printf(" ");
+            }
 	    };
           //  printf("%d",map[iy][ix]);
-        }
+        
         printf("\n");
     }
     return;
@@ -102,6 +108,8 @@ int main(int argc, char **argv)
     srand(time(NULL));
     FILE *save;
     int i,ix,iy,x,y,pathx,pathy,newx,newy,portal_exists,portalx,portaly,curr_depth,maxdepth;
+    int next_level,prev_level;
+    next_level = prev_level = 0;
     curr_depth = 0; // The current Z-level of the player, which # level player is on
     maxdepth = 1;
     portal_exists = 0;
@@ -125,6 +133,8 @@ int main(int argc, char **argv)
       levels[i].x = WIDTH/2;
       levels[i].y = HEIGHT/2;
       levels[i].generated = 0;
+      levels[i].prev_level = 0;
+      levels[i].next_level = 0;
     }
     levels[0].generated = 1;
 
@@ -149,7 +159,8 @@ int main(int argc, char **argv)
             	if(map[pathy][pathx] != EXPLORED) map[pathy][pathx] = 1;   
     	};
    	 map[y][x] = EXPLORED; 
-     if((portal_exists == 0) && ((rand()%10) == 1)){ //Sometimes you discover a portal
+     if((portal_exists == 0) && ((rand()%2) == 1) && (x != (WIDTH/2)) && (y != (HEIGHT/2)))
+     { //Sometimes you discover a portal
         portal_exists = 1;
         portalx = x;
         portaly = y;
@@ -179,7 +190,7 @@ int main(int argc, char **argv)
             newx--;
     } else if(input == 'd'){
             newx++;
-    } else if((input == '<') && (curr_depth > 0)){
+    } else if((input == '<') && (curr_depth > 0) && (x == (WIDTH/2)) && (y == (HEIGHT/2))){
       for(iy = 0;iy < HEIGHT;iy++){ // Copy current map into savegame struct (saving it)
         for(ix = 0;ix < WIDTH;ix++){
           levels[curr_depth].map[iy][ix] = map[iy][ix];  
@@ -191,7 +202,8 @@ int main(int argc, char **argv)
       levels[curr_depth].portal_exists = portal_exists;
       levels[curr_depth].portalx = portalx;
       levels[curr_depth].portaly = portaly;
-
+      levels[curr_depth].next_level = curr_depth + 1;
+      levels[curr_depth].prev_level = curr_depth - 1;
       curr_depth--;
 
       // Load the new map
@@ -205,6 +217,8 @@ int main(int argc, char **argv)
       portal_exists = levels[curr_depth].portal_exists;
       portalx = levels[curr_depth].portalx;
       portaly = levels[curr_depth].portaly;
+      next_level = levels[curr_depth].next_level;
+      prev_level = levels[curr_depth].prev_level;
 
     } else if((input == '>') && ((curr_depth+1) < DEPTH) && (portalx == x) && (portaly == y)){
       for(iy = 0;iy < HEIGHT;iy++){ // Copy current map into savegame struct (saving it)
@@ -218,7 +232,8 @@ int main(int argc, char **argv)
       levels[curr_depth].portal_exists = portal_exists;
       levels[curr_depth].portalx = portalx;
       levels[curr_depth].portaly = portaly;
-
+      levels[curr_depth].next_level = curr_depth + 1;
+      levels[curr_depth].prev_level = curr_depth - 1;
 
       if(levels[curr_depth+1].generated == 1){ // if already explored partially, load it
         curr_depth++;
@@ -230,6 +245,8 @@ int main(int argc, char **argv)
         portal_exists = levels[curr_depth].portal_exists;
         portalx = levels[curr_depth].portalx;
         portaly = levels[curr_depth].portaly;
+        next_level = levels[curr_depth].next_level;
+        prev_level = levels[curr_depth].prev_level;
       } else {
         curr_depth++;
         // Generate a new map    
@@ -244,6 +261,8 @@ int main(int argc, char **argv)
         y = HEIGHT/2;
         pathx = newx = x;
         pathy = newy = y;
+        next_level = curr_depth + 1;
+        prev_level = curr_depth - 1;
         int map[HEIGHT][WIDTH] = {{0}};
       }
       
